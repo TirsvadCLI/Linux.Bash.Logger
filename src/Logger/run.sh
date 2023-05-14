@@ -10,7 +10,6 @@
 ## Log info and error to file
 
 declare -g IFS=$'\n\t'
-declare -g TCLI_LOGGER_SCRIPTDIR="$(dirname "$(realpath "${BASH_SOURCE}")")"
 declare -g TCLI_LOGGER_INFOSCREEN_WARN=0
 # screen color output
 declare -g -r TCLI_LOGGER_NC='\033[0m' # No Color
@@ -80,7 +79,7 @@ tcli_logger_infoscreenStatus() {
 
 tcli_logger_errorCheck() {
 	if [ "$?" = "0" ]; then
-		printf "${TCLI_LOGGER_RED}An error has occuTCLI_LOGGER_RED.${TCLI_LOGGER_NC}" >&3
+		printf "${TCLI_LOGGER_RED}An error has occured.${TCLI_LOGGER_NC}" >&3
 		# read -p "Press enter or space to ignore it. Press any other key to abort." -n 1 key
 		# if [[ $key != "" ]]; then
 		# 	exit
