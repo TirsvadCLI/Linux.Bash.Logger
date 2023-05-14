@@ -42,13 +42,13 @@ tcli_logger_infoscreen() {
 	printf $(printf "[......] ${TCLI_LOGGER_BROWN}$1 ${TCLI_LOGGER_NC}$2$n") >&3
 }
 
-tcli_logger_infoscreendone() {
-	[ ${TCLI_LOGGER_INFOSCREEN_WARN} ] && TCLI_LOGGER_INFOSCREEN_WARN=0 || printf "\r\033[1C${TCLI_LOGGER_TCLI_LOGGER_GREEN} DONE ${TCLI_LOGGER_NC}" >&3
+tcli_logger_infoscreenDone() {
+	[ ${TCLI_LOGGER_INFOSCREEN_WARN} == 1 ] && TCLI_LOGGER_INFOSCREEN_WARN=0 || printf "\r\033[1C${TCLI_LOGGER_GREEN} DONE ${TCLI_LOGGER_NC}" >&3
 	printf "\r\033[80C\n" >&3
 }
 
-tcli_logger_infoscreenfailed() {
-	[ ${TCLI_LOGGER_INFOSCREEN_WARN} ] && TCLI_LOGGER_INFOSCREEN_WARN=0
+tcli_logger_infoscreenFailed() {
+	[ ${TCLI_LOGGER_INFOSCREEN_WARN == 1} ] && TCLI_LOGGER_INFOSCREEN_WARN=0
 	printf "\r\033[1C${TCLI_LOGGER_RED}FAILED${TCLI_LOGGER_NC}\n" >&3
 	[ ${1} ] && printf "${TCLI_LOGGER_RED}${1:-}" >&3
 	[ ${2} ] && printf " ${TCLI_LOGGER_BLUE}$2" >&3
@@ -65,16 +65,16 @@ tcli_logger_infoscreenFailedExit() {
 	exit 1
 }
 
-tcli_logger_infoscreenwarn() {
+tcli_logger_infoscreenWarn() {
 	printf "\r\033[1C${TCLI_LOGGER_YELLOW} WARN ${TCLI_LOGGER_NC}" >&3
 	TCLI_LOGGER_INFOSCREEN_WARN=1
 }
 
-tcli_logger_infoscreenstatus() {
+tcli_logger_infoscreenStatus() {
     if [ $1 != "0" ]; then
-        tcli_logger_infoscreenfailed
+        tcli_logger_infoscreenFailed
     else
-        tcli_logger_infoscreendone
+        tcli_logger_infoscreenDone
     fi
 }
 
