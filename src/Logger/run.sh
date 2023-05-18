@@ -24,7 +24,7 @@ declare -g -r TCLI_LOGGER_WHITE='\033[0;37m'
 ## @details
 ## **Initial logger**
 ## All output to file
-## output to screnn exaple
+## output to screen example
 ## printf "this output is visible" >&3
 ## @param logfil full path
 tcli_logger_init() {
