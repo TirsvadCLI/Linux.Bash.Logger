@@ -47,7 +47,7 @@ tcli_logger_infoscreenDone() {
 }
 
 tcli_logger_infoscreenFailed() {
-	[ ${TCLI_LOGGER_INFOSCREEN_WARN == 1} ] && TCLI_LOGGER_INFOSCREEN_WARN=0
+	[ ${TCLI_LOGGER_INFOSCREEN_WARN} == 1 ] && TCLI_LOGGER_INFOSCREEN_WARN=0
 	printf "\r\033[1C${TCLI_LOGGER_RED}FAILED${TCLI_LOGGER_NC}\n" >&3
 	[ ${1} ] && printf "${TCLI_LOGGER_RED}${1:-}" >&3
 	[ ${2} ] && printf " ${TCLI_LOGGER_BLUE}$2" >&3
