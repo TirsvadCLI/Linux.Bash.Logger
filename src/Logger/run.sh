@@ -28,44 +28,44 @@ declare -g -r TCLI_LOGGER_WHITE='\033[0;37m'
 ## printf "this output is visible" >&3
 ## @param logfil full path
 tcli_logger_init() {
-  local _file=${1-}
+  local _file=${1-my.log}
   local _dir
   _dir=$(dirname "${1}")
 	[ ! -d ${_dir} ] && mkdir $_dir || rm -f ${1}
   exec 3>&1 4>&2
-  exec 1>$_file 2>&1
-  printf "Logger loaded"
+  exec 3>$_file 2>&3
+  printf "Logger loaded" >&3
 }
 
 tcli_logger_infoscreen() {
-	printf $(printf "[......] ${TCLI_LOGGER_BROWN}$1 ${TCLI_LOGGER_NC}$2$n") >&3
+	printf $(printf "[......] ${TCLI_LOGGER_BROWN}$1 ${TCLI_LOGGER_NC}$2$n")
 }
 
 tcli_logger_infoscreenDone() {
-	[ ${TCLI_LOGGER_INFOSCREEN_WARN} == 1 ] && TCLI_LOGGER_INFOSCREEN_WARN=0 || printf "\r\033[1C${TCLI_LOGGER_GREEN} DONE ${TCLI_LOGGER_NC}" >&3
-	printf "\r\033[80C\n" >&3
+	[ ${TCLI_LOGGER_INFOSCREEN_WARN} == 1 ] && TCLI_LOGGER_INFOSCREEN_WARN=0 || printf "\r\033[1C${TCLI_LOGGER_GREEN} DONE ${TCLI_LOGGER_NC}"
+	printf "\r\033[80C\n"
 }
 
 tcli_logger_infoscreenFailed() {
 	[ ${TCLI_LOGGER_INFOSCREEN_WARN} == 1 ] && TCLI_LOGGER_INFOSCREEN_WARN=0
-	printf "\r\033[1C${TCLI_LOGGER_RED}FAILED${TCLI_LOGGER_NC}\n" >&3
-	[ ${1} ] && printf "${TCLI_LOGGER_RED}${1:-}" >&3
-	[ ${2} ] && printf " ${TCLI_LOGGER_BLUE}$2" >&3
-	[ ${3} ] && printf " ${TCLI_LOGGER_RED}$3" >&3
-	printf "${TCLI_LOGGER_NC}\n" >&3
+	printf "\r\033[1C${TCLI_LOGGER_RED}FAILED${TCLI_LOGGER_NC}\n"
+	[ ${1} ] && printf "${TCLI_LOGGER_RED}${1:-}"
+	[ ${2} ] && printf " ${TCLI_LOGGER_BLUE}$2"
+	[ ${3} ] && printf " ${TCLI_LOGGER_RED}$3"
+	printf "${TCLI_LOGGER_NC}\n"
 }
 
 tcli_logger_infoscreenFailedExit() {
-	printf "\r\033[1C${TCLI_LOGGER_RED}FAILED${TCLI_LOGGER_NC}\n" >&3
-	[ ${1} ] && printf "${TCLI_LOGGER_RED}${1:-}" >&3
-	[ ${2} ] && printf " ${TCLI_LOGGER_BLUE}$2" >&3
-	[ ${3} ] && printf " ${TCLI_LOGGER_RED}$3" >&3
-	printf "${TCLI_LOGGER_NC}\n" >&3
+	printf "\r\033[1C${TCLI_LOGGER_RED}FAILED${TCLI_LOGGER_NC}\n"
+	[ ${1} ] && printf "${TCLI_LOGGER_RED}${1:-}"
+	[ ${2} ] && printf " ${TCLI_LOGGER_BLUE}$2"
+	[ ${3} ] && printf " ${TCLI_LOGGER_RED}$3"
+	printf "${TCLI_LOGGER_NC}\n"
 	exit 1
 }
 
 tcli_logger_infoscreenWarn() {
-	printf "\r\033[1C${TCLI_LOGGER_YELLOW} WARN ${TCLI_LOGGER_NC}" >&3
+	printf "\r\033[1C${TCLI_LOGGER_YELLOW} WARN ${TCLI_LOGGER_NC}"
 	TCLI_LOGGER_INFOSCREEN_WARN=1
 }
 
@@ -79,10 +79,33 @@ tcli_logger_infoscreenStatus() {
 
 tcli_logger_errorCheck() {
 	if [ "$?" = "0" ]; then
-		printf "${TCLI_LOGGER_RED}An error has occured.${TCLI_LOGGER_NC}" >&3
+		printf "${TCLI_LOGGER_RED}An error has occured.${TCLI_LOGGER_NC}"
 		# read -p "Press enter or space to ignore it. Press any other key to abort." -n 1 key
 		# if [[ $key != "" ]]; then
 		# 	exit
 		# fi
 	fi
+}
+
+tcli_logger_title() {
+  local _fillerlength=${2:-79}
+  local _n_pad=$(( (${_fillerlength} - ${#1} - 2) / 2 ))
+  # (( _fillerlength++ ))
+  # echo "string ${_fillerlength}"
+  # echo "Some _n_pad len $_n_pad"
+  i=$(( $_n_pad * 2 + 2 +${#1} ))
+  # echo "Some len $i"
+  # printf '%c\e[%db\n' "+" "${_fillerlength}"
+  printf "$(printf "%${_fillerlength}s" | tr ' ' +)\n"
+  printf $(printf "%${_n_pad}s" | tr ' ' +)
+  printf $(printf ' %s ' "$1")
+  if [ $(( $_n_pad * 2 + ${#1} + 2 )) -gt ${2} ]; then
+    (( _n_pad-- ))
+  elif [ $(($_n_pad*2+${#1}+2)) -lt ${2} ]; then
+    (( _n_pad++ ))
+  fi
+  printf $(printf "%${_n_pad}s" | tr ' ' +)"\n"
+  printf "$(printf "%${_fillerlength}s" | tr ' ' +)\n"
+  # printf '%c\e[%db\n' "+" "${_fillerlength}"
+  # echo "Some _n_pad len $_n_pad"
 }
