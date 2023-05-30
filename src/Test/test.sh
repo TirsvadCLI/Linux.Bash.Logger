@@ -86,6 +86,15 @@ test_tcli_logger_title() {
   [ "$result" = "$valid" ] || info_failed && info_passed
 }
 
+test_tcli_logger_infoscreenFailedExit() {
+  local _result
+  exec 3<&-
+  rm ${TEST_PATH_SCRIPTDIR}/log/mytest.log
+  exec 3>${TEST_PATH_SCRIPTDIR}/log/mytest.log 2>&3
+  _result=$(tcli_logger_infoscreenFailedExit "error" "test" "check")
+  printf $_result
+}
+
 info_repport() {
   printf "\nTest result\n"
   printf "Passed ${TEST_PASSED}\n"
@@ -97,6 +106,7 @@ test_fildiscripter_3_false
 test_tcli_logger_init
 test_fildiscripter_3_true
 test_tcli_logger_title
+# test_tcli_logger_infoscreenFailedExit
 
 info_repport
 
