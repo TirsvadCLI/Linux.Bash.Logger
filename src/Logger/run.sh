@@ -11,7 +11,7 @@
 
 declare -g IFS=$'\n\t'
 declare -g TCLI_LOGGER_INFOSCREEN_WARN=0
-# screen color output
+# screen color
 declare -g -r TCLI_LOGGER_NC='\033[0m' # No Color
 declare -g -r TCLI_LOGGER_RED='\033[0;31m'
 declare -g -r TCLI_LOGGER_GREEN='\033[0;32m'
@@ -59,13 +59,13 @@ tcli_logger_infoscreenDone() {
 ## @param error message part 2 blue color
 ## @param error message part 3 red color
 tcli_logger_infoscreenFailed() {
-  local _errormsg="${1} ${2} ${3}"
+  local _errormsg="${1:-} ${2:-} ${3:-}"
 	[ ${TCLI_LOGGER_INFOSCREEN_WARN} == 1 ] && TCLI_LOGGER_INFOSCREEN_WARN=0
 	printf "\r\033[1C${TCLI_LOGGER_RED}FAILED${TCLI_LOGGER_NC}\n"
-	[ ${1:-} ] && printf "${TCLI_LOGGER_RED}${1:-}"
-	[ ${2:-} ] && printf " ${TCLI_LOGGER_BLUE}${2:-}"
-	[ ${3:-} ] && printf " ${TCLI_LOGGER_RED}${3:-}"
-	printf "${TCLI_LOGGER_NC}\n"
+	# [ ${1:-} ] && printf "${TCLI_LOGGER_RED}${1}"
+	# [ ${2:-} ] && printf " ${TCLI_LOGGER_BLUE}${2}"
+	# [ ${3:-} ] && printf " ${TCLI_LOGGER_RED}${3}"
+	# printf "${TCLI_LOGGER_NC}\n"
   [ ! -z "${_errormsg:-}" ] && printf "${_errormsg}" >&2
 }
 
@@ -102,8 +102,10 @@ tcli_logger_infoscreenStatus() {
 }
 
 ## @fn tcli_logger_errorCheck()
+## @details
+## **TODO**
 tcli_logger_errorCheck() {
-	if [ "$?" = "0" ]; then
+	if [ $? -eq 0 ]; then
 		printf "${TCLI_LOGGER_RED}An error has occured.${TCLI_LOGGER_NC}"
 		# read -p "Press enter or space to ignore it. Press any other key to abort." -n 1 key
 		# if [[ $key != "" ]]; then
@@ -113,18 +115,27 @@ tcli_logger_errorCheck() {
 }
 
 ## @fn tcli_logger_title()
+## @details
+## **Title**
+## Fillerlength value is allways one less than the number of char it start with 0
+## @param title
+## @param fillerlength with '+' ( default value is 79 which is 80 char )
+## @param filler char
 tcli_logger_title() {
-  local _fillerlength=${2:-79}
-  local _n_pad=$(( (${_fillerlength} - ${#1} - 2) / 2 ))
-  i=$(( $_n_pad * 2 + 2 +${#1} ))
-  printf "$(printf "%${_fillerlength}s" | tr ' ' +)\n"
-  printf $(printf "%${_n_pad}s" | tr ' ' +)
-  printf $(printf ' %s ' "$1")
-  if [ $(( $_n_pad * 2 + ${#1} + 2 )) -gt ${2} ]; then
-    (( _n_pad-- ))
-  elif [ $(($_n_pad*2+${#1}+2)) -lt ${2} ]; then
+  local _title=${1:-}
+  local -i _fillerlength=${2:-79}
+  local _fillerchar=${3:-"+"}
+  local -i _n_pad=$(( (${_fillerlength} - ${#_title} - 2) / 2 ))
+  local -i _i=$(( $_n_pad * 2 + 2 +${#_title} ))
+  printf -- "${_fillerchar}%.0s" $(seq ${_fillerlength})
+  printf "\n"
+  printf -- "${_fillerchar}%.0s" $(seq ${_n_pad})
+  printf $(printf ' %s ' "$_title")
+  if [ $(( $_n_pad * 2 + ${#_title} + 2 )) -lt ${_fillerlength} ]; then
     (( _n_pad++ ))
   fi
-  printf $(printf "%${_n_pad}s" | tr ' ' +)"\n"
-  printf "$(printf "%${_fillerlength}s" | tr ' ' +)\n"
+  printf -- "${_fillerchar}%.0s" $(seq ${_n_pad})
+  printf "\n"
+  printf -- "${_fillerchar}%.0s" $(seq ${_fillerlength})
+  printf "\n"
 }
