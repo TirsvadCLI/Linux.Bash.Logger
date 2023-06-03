@@ -44,7 +44,7 @@ info_failed() {
 ## @fn test_fildiscripter_3_false()
 test_fildiscripter_3_false () {
   info "fildiscripter 3 should not be avaible"
-  if { >&3; } 2> /dev/null; then
+  if { >&3; } 2>/dev/null; then
     info_failed
   else
     info_passed
@@ -64,7 +64,7 @@ test_tcli_logger_init() {
 ## @fn test_fildiscripter_3_true()
 test_fildiscripter_3_true () {
   info "fildiscripter 3 is avaible"
-  if { >&3; } 2> /dev/null; then
+  if { >&3; } 2>/dev/null; then
     info_passed
   else
     info_failed
@@ -79,16 +79,16 @@ test_tcli_logger_title() {
   local _result
   
   info "tcli_logger_title set 1"
-  _result=$(tcli_logger_title "The title" 80)
+  _result=$(tcli_logger_title "The title" 81)
   [ "$_result" = "$(printf $_valid_test_1)" ] && info_passed || info_failed
 
   info "tcli_logger_title set 2"
-  _result=$(tcli_logger_title "The title number two meget langt" 63)
+  _result=$(tcli_logger_title "The title number two meget langt" 64)
   [ "$_result" = "$(printf $_valid_test_2)" ] && info_passed || info_failed
 
 
   info "tcli_logger_title set 3"
-  _result=$(tcli_logger_title "The title 3" 79 "-")
+  _result=$(tcli_logger_title "The title 3" 80 "-")
   [[ "$(printf -- $_result)" == "$(printf -- $_valid_test_3)" ]] && info_passed || info_failed
 }
 
@@ -98,6 +98,24 @@ test_tcli_logger_title() {
 test_tcli_logger_infoscreenFailedExit() {
   local _result
 
+}
+
+test_tcli_logger_file_info() {
+  info "tcli_logger_file_info"
+  tcli_logger_file_info "info msg"
+  [ $(grep -R "Info >>> info msg" ./log/mytest.log) ] && info_passed || info_failed
+}
+
+test_tcli_logger_file_warn() {
+  info "tcli_logger_file_warn"
+  tcli_logger_file_warn "warning msg"
+  [ $(grep -R "Warn >>> warning msg" ./log/mytest.log) ] && info_passed || info_failed
+}
+
+test_tcli_logger_file_error() {
+  info "tcli_logger_file_error"
+  tcli_logger_file_error "error msg"
+  [ $(grep -R "Error >>> error msg" ./log/mytest.log) ] && info_passed || info_failed
 }
 
 ## @fn info_report()
@@ -114,6 +132,9 @@ test_fildiscripter_3_false
 test_tcli_logger_init
 test_fildiscripter_3_true
 test_tcli_logger_title
+test_tcli_logger_file_info
+test_tcli_logger_file_warn
+test_tcli_logger_file_error
 
 info_report
 

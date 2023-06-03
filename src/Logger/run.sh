@@ -9,15 +9,23 @@
 ## Info to screen
 ## Log info and error to file
 
+## @brief string internal field separator
 declare -g IFS=$'\n\t'
+## @brief bool if warning have been triggered
 declare -g TCLI_LOGGER_INFOSCREEN_WARN=0
-# screen color
+## @brief string color no color
 declare -g -r TCLI_LOGGER_NC='\033[0m' # No Color
+## @brief string color red
 declare -g -r TCLI_LOGGER_RED='\033[0;31m'
+## @brief string color green
 declare -g -r TCLI_LOGGER_GREEN='\033[0;32m'
+## @brief string color brown
 declare -g -r TCLI_LOGGER_BROWN='\033[0;33m'
+## @brief string color blue
 declare -g -r TCLI_LOGGER_BLUE='\033[0;34m'
+## @brief string color yellow
 declare -g -r TCLI_LOGGER_YELLOW='\033[1;33m'
+## @brief string color white
 declare -g -r TCLI_LOGGER_WHITE='\033[0;37m'
 
 ## @fn tcli_logger_init()
@@ -26,7 +34,7 @@ declare -g -r TCLI_LOGGER_WHITE='\033[0;37m'
 ## All error go to log file
 ## Output to file example
 ## printf "this output is visible" >&3
-## @param log file full path
+## @param string full path of the log file
 tcli_logger_init() {
   local _file=${1-my.log}
   local _dir
@@ -34,7 +42,7 @@ tcli_logger_init() {
 	[ ! -d ${_dir} ] && mkdir $_dir || rm -f ${1}
   exec 3>&1 4>&2
   exec 3>$_file 2>&3
-  printf "Logger loaded\n" >&3
+  tcli_logger_file_info "Logger loaded"
 }
 
 ## @fn tcli_logger_infoscreen()
@@ -55,9 +63,9 @@ tcli_logger_infoscreenDone() {
 ## @fn tcli_logger_infoscreenFailed()
 ## @details
 ## **Info of the process step [ FAILED ]**
-## @param error message part 1 red color
-## @param error message part 2 blue color
-## @param error message part 3 red color
+## @param string error message part 1 red color
+## @param string error message part 2 blue color
+## @param string error message part 3 red color
 tcli_logger_infoscreenFailed() {
   local _errormsg="${1:-} ${2:-} ${3:-}"
 	[ ${TCLI_LOGGER_INFOSCREEN_WARN} == 1 ] && TCLI_LOGGER_INFOSCREEN_WARN=0
@@ -73,10 +81,10 @@ tcli_logger_infoscreenFailed() {
 ## @details
 ## **Info of the process step [ FAILED ]**
 ## Then it will exit with a error code
-## @param error message part 1 red color
-## @param error message part 2 blue color
-## @param error message part 3 red color
-## @param exit code (default is 1)
+## @param string error message part 1 red color
+## @param string error message part 2 blue color
+## @param string error message part 3 red color
+## @param interger exit code (default is 1)
 tcli_logger_infoscreenFailedExit() {
   local -i _errorCode=${1:-1}
   tcli_logger_infoscreenFailed "${1:-}" "${2:-}" "${3:-}"
@@ -117,13 +125,15 @@ tcli_logger_errorCheck() {
 ## @fn tcli_logger_title()
 ## @details
 ## **Title**
-## Fillerlength value is allways one less than the number of char it start with 0
-## @param title
-## @param fillerlength with '+' ( default value is 79 which is 80 char )
-## @param filler char
+## Creating a box around title
+## Fillerlength is numbers of char horizontialt
+## @param string title
+## @param string fillerlength ( default value 80 )
+## @param char filler char ( default value +)
 tcli_logger_title() {
   local _title=${1:-}
-  local -i _fillerlength=${2:-79}
+  local -i _fillerlength=${2:-80}
+  (( _fillerlength-- ))
   local _fillerchar=${3:-"+"}
   local -i _n_pad=$(( (${_fillerlength} - ${#_title} - 2) / 2 ))
   local -i _i=$(( $_n_pad * 2 + 2 +${#_title} ))
@@ -138,4 +148,28 @@ tcli_logger_title() {
   printf "\n"
   printf -- "${_fillerchar}%.0s" $(seq ${_fillerlength})
   printf "\n"
+}
+
+## @fn tcli_logger_file_info()
+## @details
+## **Info to log file**
+## @param string massage
+tcli_logger_file_info() {
+  echo "[$(date +%Y-%m-%d\ %T.%6N)] Info >>> ${1:-}" >&3
+}
+
+## @fn tcli_logger_file_Warn()
+## @details
+## **Warning to log file**
+## @param string massage
+tcli_logger_file_warn() {
+  echo "[$(date +%Y-%m-%d\ %T.%6N)] Warn >>> ${1:-}" >&3
+}
+
+## @fn tcli_logger_file_error()
+## @details
+## **Error to log file**
+## @param string massage
+tcli_logger_file_error() {
+  echo "[$(date +%Y-%m-%d\ %T.%6N)] Error >>> ${1:-}" >&3
 }
