@@ -41,6 +41,7 @@ info_failed() {
   TEST_FAILED+=1
 }
 
+## @fn test_fildiscripter_3_false()
 test_fildiscripter_3_false () {
   info "fildiscripter 3 should not be avaible"
   if { >&3; } 2> /dev/null; then
@@ -50,6 +51,7 @@ test_fildiscripter_3_false () {
   fi
 }
 
+## @fn test_tcli_logger_init()
 test_tcli_logger_init() {
   info "tcli_logger_init create directory and file"
   if tcli_logger_init "${TEST_PATH_SCRIPTDIR}/log/mytest.log"; then
@@ -59,6 +61,7 @@ test_tcli_logger_init() {
   fi
 }
 
+## @fn test_fildiscripter_3_true()
 test_fildiscripter_3_true () {
   info "fildiscripter 3 is avaible"
   if { >&3; } 2> /dev/null; then
@@ -68,35 +71,40 @@ test_fildiscripter_3_true () {
   fi
 }
 
+## @fn test_tcli_logger_title()
 test_tcli_logger_title() {
-  local valid
-  local result
-  result=$(tcli_logger_title "The title" 80)
-  valid="++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-++++++++++++++++++++++++++++++++++ The title +++++++++++++++++++++++++++++++++++
-++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
+  local _valid_test_1="++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++\n++++++++++++++++++++++++++++++++++ The title +++++++++++++++++++++++++++++++++++\n++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
+  local _valid_test_2="+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++\n++++++++++++++ The title number two meget langt +++++++++++++++\n+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
+  local _valid_test_3="$(printf -- "-------------------------------------------------------------------------------\n--------------------------------- The title 3 ---------------------------------\n-------------------------------------------------------------------------------")"
+  local _result
+  
   info "tcli_logger_title set 1"
-  [ "$result" = "$valid" ] && info_passed || info_failed
+  _result=$(tcli_logger_title "The title" 80)
+  [ "$_result" = "$(printf $_valid_test_1)" ] && info_passed || info_failed
 
-  valid="+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-++++++++++++++ The title number two meget langt +++++++++++++++
-+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
-  result=$(tcli_logger_title "The title number two meget langt" 63)
   info "tcli_logger_title set 2"
-  [ "$result" = "$valid" ] || info_failed && info_passed
+  _result=$(tcli_logger_title "The title number two meget langt" 63)
+  [ "$_result" = "$(printf $_valid_test_2)" ] && info_passed || info_failed
+
+
+  info "tcli_logger_title set 3"
+  _result=$(tcli_logger_title "The title 3" 79 "-")
+  [[ "$(printf -- $_result)" == "$(printf -- $_valid_test_3)" ]] && info_passed || info_failed
 }
 
+## @fn test_tcli_logger_infoscreenFailedExit()
+## @details
+## **TODO**
 test_tcli_logger_infoscreenFailedExit() {
   local _result
-  exec 3<&-
-  rm ${TEST_PATH_SCRIPTDIR}/log/mytest.log
-  exec 3>${TEST_PATH_SCRIPTDIR}/log/mytest.log 2>&3
-  _result=$(tcli_logger_infoscreenFailedExit "error" "test" "check")
-  printf $_result
+
 }
 
-info_repport() {
-  printf "\nTest result\n"
+## @fn info_report()
+## @details
+## **Generate test repport**
+info_report() {
+  printf "\n\nTest result\n\n"
   printf "Passed ${TEST_PASSED}\n"
   printf "Failed ${TEST_FAILED}\n"
 }
@@ -106,8 +114,7 @@ test_fildiscripter_3_false
 test_tcli_logger_init
 test_fildiscripter_3_true
 test_tcli_logger_title
-# test_tcli_logger_infoscreenFailedExit
 
-info_repport
+info_report
 
 rm -rf ${TEST_PATH_SCRIPTDIR}/log
