@@ -9,6 +9,10 @@
 ## Info to screen
 ## Log info and error to file
 
+## @brief string basepath of this script
+declare -g -r TCLI_LOGGER_SCRIPTDIR="$(dirname "$(realpath "${BASH_SOURCE}")")"
+## @brief string version
+declare -g TCLI_LOGGER_VERSION
 ## @brief string internal field separator
 declare -g IFS=$'\n\t'
 ## @brief bool if warning have been triggered
@@ -36,13 +40,14 @@ declare -g -r TCLI_LOGGER_WHITE='\033[0;37m'
 ## printf "this output is visible" >&3
 ## @param string full path of the log file
 tcli_logger_init() {
+	[ $(cd $TCLI_LOGGER_SCRIPTDIR; git describe --tags 2>/dev/null) ] && TCLI_LOGGER_VERSION=$(cd $TCLI_LOGGER_SCRIPTDIR; git describe --tags) || TCLI_LOGGER_VERSION="build $(git rev-parse --short HEAD)"
   local _file=${1-my.log}
   local _dir
   _dir=$(dirname "${1}")
 	[ ! -d ${_dir} ] && mkdir $_dir || rm -f ${1}
   exec 3>&1 4>&2
   exec 3>$_file 2>&3
-  tcli_logger_file_info "Logger loaded"
+  tcli_logger_file_info "Loaded" "Logger $TCLI_LOGGER_VERSION"
 }
 
 ## @fn tcli_logger_infoscreen()
