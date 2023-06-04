@@ -153,23 +153,48 @@ tcli_logger_title() {
 ## @fn tcli_logger_file_info()
 ## @details
 ## **Info to log file**
-## @param string massage
+## @param string message
+## @param string function or other notice before message
 tcli_logger_file_info() {
-  echo "[$(date +%Y-%m-%d\ %T.%6N)] Info >>> ${1:-}" >&3
+  tcli_logger_file "Info" ${1:-} ${2:-}
 }
 
-## @fn tcli_logger_file_Warn()
+## @fn tcli_logger_file_warn()
 ## @details
 ## **Warning to log file**
-## @param string massage
+## @param string message
+## @param string function or other notice before message
 tcli_logger_file_warn() {
-  echo "[$(date +%Y-%m-%d\ %T.%6N)] Warn >>> ${1:-}" >&3
+  tcli_logger_file "Warn" ${1:-} ${2:-}
 }
 
 ## @fn tcli_logger_file_error()
 ## @details
 ## **Error to log file**
-## @param string massage
+## @param string message
+## @param string function or other notice before message
 tcli_logger_file_error() {
-  echo "[$(date +%Y-%m-%d\ %T.%6N)] Error >>> ${1:-}" >&3
+  tcli_logger_file "Error" ${1:-} ${2:-}
 }
+
+## @fn tcli_logger_file()
+## @details
+## **Error to log file**
+## @param string level message
+## @param string message
+## @param string function or other notice before message
+tcli_logger_file() {
+  local _msg
+  if [[ -n "${2:-}" && -n "${3:-}" ]]; then
+    _msg="${3} : ${2}"
+  elif [[ -n "${2:-}" ]]; then
+    _msg="${2}"
+  elif [[ -n "${3:-}" ]]; then
+    _msg="${3}"
+  else
+     tcli_logger_file_warn "tcli_logger_file" "missing message"
+     return 1
+  fi
+  echo "[$(date +%Y-%m-%d\ %T.%6N)] ${1:-} >>> ${_msg}" >&3
+}
+
