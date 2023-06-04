@@ -92,26 +92,21 @@ test_tcli_logger_title() {
   [[ "$(printf -- $_result)" == "$(printf -- $_valid_test_3)" ]] && info_passed || info_failed
 }
 
-## @fn test_tcli_logger_infoscreenFailedExit()
-## @details
-## **TODO**
-test_tcli_logger_infoscreenFailedExit() {
-  local _result
-
-}
-
+## @fn test_tcli_logger_file_info()
 test_tcli_logger_file_info() {
   info "tcli_logger_file_info"
   tcli_logger_file_info "info msg"
   [ $(grep -R "Info >>> info msg" ./log/mytest.log) ] && info_passed || info_failed
 }
 
+## @fn test_tcli_logger_file_warn()
 test_tcli_logger_file_warn() {
   info "tcli_logger_file_warn"
   tcli_logger_file_warn "warning msg"
   [ $(grep -R "Warn >>> warning msg" ./log/mytest.log) ] && info_passed || info_failed
 }
 
+## @fn test_tcli_logger_file_error()
 test_tcli_logger_file_error() {
   info "tcli_logger_file_error"
   tcli_logger_file_error "error msg"
