@@ -71,15 +71,16 @@ tcli_logger_infoscreenDone() {
 ## @param string error message part 1 red color
 ## @param string error message part 2 blue color
 ## @param string error message part 3 red color
+## @param string function or other notice in front of message
 tcli_logger_infoscreenFailed() {
-  local _errormsg="${1:-} ${2:-} ${3:-}"
+  local -a _errormsg
+	# ="${1:-} ${2:-} ${3:-}"
+	[ ${1:-} ] && _errormsg=($1)
+	[ ${2:-} ] && _errormsg+=($2)
+	[ ${3:-} ] && _errormsg+=($3)
 	[ ${TCLI_LOGGER_INFOSCREEN_WARN} == 1 ] && TCLI_LOGGER_INFOSCREEN_WARN=0
 	printf "\r\033[1C${TCLI_LOGGER_RED}FAILED${TCLI_LOGGER_NC}\n"
-	# [ ${1:-} ] && printf "${TCLI_LOGGER_RED}${1}"
-	# [ ${2:-} ] && printf " ${TCLI_LOGGER_BLUE}${2}"
-	# [ ${3:-} ] && printf " ${TCLI_LOGGER_RED}${3}"
-	# printf "${TCLI_LOGGER_NC}\n"
-  [ ! -z "${_errormsg:-}" ] && printf "${_errormsg}" >&2
+	tcli_logger_file_error $(echo ${_errormsg[@]}) ${4:-}
 }
 
 ## @fn tcli_logger_infoscreenFailedExit()
@@ -90,8 +91,14 @@ tcli_logger_infoscreenFailed() {
 ## @param string error message part 2 blue color
 ## @param string error message part 3 red color
 ## @param interger exit code (default is 1)
+## @param string error cause
 tcli_logger_infoscreenFailedExit() {
-  tcli_logger_infoscreenFailed "${1:-}" "${2:-}" "${3:-}"
+  tcli_logger_infoscreenFailed "${1:-}" "${2:-}" "${3:-}" "${5:-}"
+	[ ${4:-} ] && printf "${TCLI_LOGGER_RED}${1} : "
+	[ ${1:-} ] && printf "${TCLI_LOGGER_RED}${1}"
+	[ ${2:-} ] && printf " ${TCLI_LOGGER_BLUE}${2}"
+	[ ${3:-} ] && printf " ${TCLI_LOGGER_RED}${3}"
+	printf "${TCLI_LOGGER_NC}\n"
 	exit ${4:-1}
 }
 
@@ -158,7 +165,7 @@ tcli_logger_title() {
 ## @details
 ## **Info to log file**
 ## @param string message
-## @param string function or other notice before message
+## @param string function or other notice in front of message
 tcli_logger_file_info() {
   tcli_logger_file "Info" ${1:-} ${2:-}
 }
