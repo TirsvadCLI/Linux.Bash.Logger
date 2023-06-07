@@ -91,9 +91,8 @@ tcli_logger_infoscreenFailed() {
 ## @param string error message part 3 red color
 ## @param interger exit code (default is 1)
 tcli_logger_infoscreenFailedExit() {
-  local -i _errorCode=${1:-1}
   tcli_logger_infoscreenFailed "${1:-}" "${2:-}" "${3:-}"
-	exit $_errorCode
+	exit ${4:-1}
 }
 
 ## @fn tcli_logger_infoscreenWarn()
