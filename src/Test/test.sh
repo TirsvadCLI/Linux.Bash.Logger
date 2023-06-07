@@ -113,6 +113,14 @@ test_tcli_logger_file_error() {
   [ $(grep -R "Error >>> error msg" ./log/mytest.log) ] && info_passed || info_failed
 }
 
+test_tcli_logger_infoscreenFailed() {
+	local _result
+  info "tcli_logger_infoscreenFailed"
+  _result=$( tcli_logger_infoscreenFailedExit "Must be run as" "root" "" 100 "Unprivileged user")
+  [ $(grep -R "Error >>> Unprivileged user : Must be run as root" ./log/mytest.log) ] && info_passed || info_failed
+	# TODO test result
+}
+
 ## @fn info_report()
 ## @details
 ## **Generate test repport**
@@ -130,7 +138,8 @@ test_tcli_logger_title
 test_tcli_logger_file_info
 test_tcli_logger_file_warn
 test_tcli_logger_file_error
+test_tcli_logger_infoscreenFailed
 
 info_report
 
-rm -rf ${TEST_PATH_SCRIPTDIR}/log
+# rm -rf ${TEST_PATH_SCRIPTDIR}/log
