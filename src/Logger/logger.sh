@@ -1,18 +1,16 @@
 #!/bin/bash
 
-## @file
-## @author Jens Tirsvad Nielsen
-## @brief Logger
+## @file logger.sh
+## @brief Logger for screen and file
 ## @details
-## **Logger**
+## This is a shell script designed to handle logging for various processes. It can log information to the screen and redirect logs to a specified file, allowing for better error tracking and process monitoring.
 ##
-## Info to screen
-## Log info and error to file
+## @author Jens Tirsvad Nielsen
+## @date May 2023
 
-## @brief string basepath of this script
 declare -g -r TCLI_LOGGER_SCRIPTDIR="$(dirname "$(realpath "${BASH_SOURCE}")")"
 ## @brief string version
-declare -g TCLI_LOGGER_VERSION
+declare -g TCLI_LOGGER_VERSION="0.2.0"
 ## @brief string internal field separator
 declare -g IFS=$'\n\t'
 ## @brief bool if warning have been triggered
@@ -40,7 +38,6 @@ declare -g -r TCLI_LOGGER_WHITE='\033[0;37m'
 ## printf "this output is visible" >&3
 ## @param string full path of the log file
 tcli_logger_init() {
-	[ $(cd $TCLI_LOGGER_SCRIPTDIR; git describe --tags 2>/dev/null) ] && TCLI_LOGGER_VERSION=$(cd $TCLI_LOGGER_SCRIPTDIR; git describe --tags) || TCLI_LOGGER_VERSION="build $(git rev-parse --short HEAD)"
   local _file=${1-my.log}
   local _dir
   _dir=$(dirname "${1}")
@@ -208,4 +205,3 @@ tcli_logger_file() {
   fi
   echo "[$(date +%Y-%m-%d\ %T.%6N)] ${1:-} >>> ${_msg}" >&3
 }
-

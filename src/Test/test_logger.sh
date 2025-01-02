@@ -11,7 +11,7 @@ declare -g TEST_PATH_APP=$(realpath "${TEST_PATH_SCRIPTDIR}/../Logger")
 declare -i -g TEST_PASSED=0
 declare -i -g TEST_FAILED=0
 
-. ${TEST_PATH_APP}/run.sh
+. ${TEST_PATH_APP}/logger.sh
 
 ## @fn info()
 ## @details
@@ -22,9 +22,9 @@ info() {
 }
 
 ## @fn info_passed()
+## @brief Info to screen
 ## @details
-## **Info to screen**
-## send "passed" in front of info message
+## put "passed" in front of info message
 ## counting for later repport
 info_passed() {
   printf " PASSED\n"
@@ -74,7 +74,7 @@ test_fildiscripter_3_true () {
 ## @fn test_tcli_logger_title()
 test_tcli_logger_title() {
   local _valid_test_1="++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++\n++++++++++++++++++++++++++++++++++ The title +++++++++++++++++++++++++++++++++++\n++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
-  local _valid_test_2="+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++\n++++++++++++++ The title number two meget langt +++++++++++++++\n+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
+  local _valid_test_2="+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++\n+++++++++++++++ The title number two very long ++++++++++++++++\n+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
   local _valid_test_3="$(printf -- "-------------------------------------------------------------------------------\n--------------------------------- The title 3 ---------------------------------\n-------------------------------------------------------------------------------")"
   local _result
   
@@ -83,9 +83,8 @@ test_tcli_logger_title() {
   [ "$_result" = "$(printf $_valid_test_1)" ] && info_passed || info_failed
 
   info "tcli_logger_title set 2"
-  _result=$(tcli_logger_title "The title number two meget langt" 64)
+  _result=$(tcli_logger_title "The title number two very long" 64)
   [ "$_result" = "$(printf $_valid_test_2)" ] && info_passed || info_failed
-
 
   info "tcli_logger_title set 3"
   _result=$(tcli_logger_title "The title 3" 80 "-")

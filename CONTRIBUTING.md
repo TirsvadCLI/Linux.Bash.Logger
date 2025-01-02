@@ -6,7 +6,7 @@ I'm really glad you're reading this, because we need volunteer developers to hel
 
 Start reading our code and you'll get the hang of it. We optimize for readability:
 
-* We indent using tabs for spaces
+* We indent using 4 spaces
 
 Thanks,
 TirsvadCLI Team

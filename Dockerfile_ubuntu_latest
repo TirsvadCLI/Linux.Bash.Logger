@@ -1,0 +1,21 @@
+# Use Ubuntu as the base image
+FROM ubuntu:latest
+
+# Install any necessary packages
+RUN apt-get update && apt-get install -y \
+    curl \
+    git \
+    && apt-get clean
+
+# Set the SHELL to bash
+SHELL ["/bin/bash", "-c"]
+
+# Set the working directory in the container
+WORKDIR /usr/src/app
+
+# Copy the current directory contents into the container
+COPY ./src/ .
+
+WORKDIR /usr/src/app/Test
+
+CMD ["bash"]
