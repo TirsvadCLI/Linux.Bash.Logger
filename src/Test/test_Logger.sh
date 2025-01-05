@@ -11,7 +11,7 @@ declare -g TEST_PATH_APP=$(realpath "${TEST_PATH_SCRIPTDIR}/../Logger")
 declare -i -g TEST_PASSED=0
 declare -i -g TEST_FAILED=0
 
-. ${TEST_PATH_APP}/logger.sh
+. ${TEST_PATH_APP}/Logger.sh
 
 ## @fn info()
 ## @details
@@ -51,10 +51,10 @@ test_fildiscripter_3_false () {
   fi
 }
 
-## @fn test_tcli_logger_init()
-test_tcli_logger_init() {
-  info "tcli_logger_init create directory and file"
-  if tcli_logger_init "${TEST_PATH_SCRIPTDIR}/log/mytest.log"; then
+## @fn test_tcli_linux_logger_init()
+test_tcli_linux_logger_init() {
+  info "tcli_linux_logger_init create directory and file"
+  if tcli_linux_logger_init "${TEST_PATH_SCRIPTDIR}/log/mytest.log"; then
     info_passed
   else
     info_failed
@@ -71,51 +71,51 @@ test_fildiscripter_3_true () {
   fi
 }
 
-## @fn test_tcli_logger_title()
-test_tcli_logger_title() {
+## @fn test_tcli_linux_logger_title()
+test_tcli_linux_logger_title() {
   local _valid_test_1="++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++\n++++++++++++++++++++++++++++++++++ The title +++++++++++++++++++++++++++++++++++\n++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
   local _valid_test_2="+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++\n+++++++++++++++ The title number two very long ++++++++++++++++\n+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
   local _valid_test_3="$(printf -- "-------------------------------------------------------------------------------\n--------------------------------- The title 3 ---------------------------------\n-------------------------------------------------------------------------------")"
   local _result
   
-  info "tcli_logger_title set 1"
-  _result=$(tcli_logger_title "The title" 81)
+  info "tcli_linux_logger_title set 1"
+  _result=$(tcli_linux_logger_title "The title" 81)
   [ "$_result" = "$(printf $_valid_test_1)" ] && info_passed || info_failed
 
-  info "tcli_logger_title set 2"
-  _result=$(tcli_logger_title "The title number two very long" 64)
+  info "tcli_linux_logger_title set 2"
+  _result=$(tcli_linux_logger_title "The title number two very long" 64)
   [ "$_result" = "$(printf $_valid_test_2)" ] && info_passed || info_failed
 
-  info "tcli_logger_title set 3"
-  _result=$(tcli_logger_title "The title 3" 80 "-")
+  info "tcli_linux_logger_title set 3"
+  _result=$(tcli_linux_logger_title "The title 3" 80 "-")
   [[ "$(printf -- $_result)" == "$(printf -- $_valid_test_3)" ]] && info_passed || info_failed
 }
 
-## @fn test_tcli_logger_file_info()
-test_tcli_logger_file_info() {
-  info "tcli_logger_file_info"
-  tcli_logger_file_info "info msg"
+## @fn test_tcli_linux_logger_file_info()
+test_tcli_linux_logger_file_info() {
+  info "tcli_linux_logger_file_info"
+  tcli_linux_logger_file_info "info msg"
   [ $(grep -R "Info >>> info msg" ./log/mytest.log) ] && info_passed || info_failed
 }
 
-## @fn test_tcli_logger_file_warn()
-test_tcli_logger_file_warn() {
-  info "tcli_logger_file_warn"
-  tcli_logger_file_warn "warning msg"
+## @fn test_tcli_linux_logger_file_warn()
+test_tcli_linux_logger_file_warn() {
+  info "tcli_linux_logger_file_warn"
+  tcli_linux_logger_file_warn "warning msg"
   [ $(grep -R "Warn >>> warning msg" ./log/mytest.log) ] && info_passed || info_failed
 }
 
-## @fn test_tcli_logger_file_error()
-test_tcli_logger_file_error() {
-  info "tcli_logger_file_error"
-  tcli_logger_file_error "error msg"
+## @fn test_tcli_linux_logger_file_error()
+test_tcli_linux_logger_file_error() {
+  info "tcli_linux_logger_file_error"
+  tcli_linux_logger_file_error "error msg"
   [ $(grep -R "Error >>> error msg" ./log/mytest.log) ] && info_passed || info_failed
 }
 
-test_tcli_logger_infoscreenFailed() {
+test_tcli_linux_logger_infoscreenFailed() {
 	local _result
-  info "tcli_logger_infoscreenFailed"
-  _result=$( tcli_logger_infoscreenFailedExit "Must be run as" "root" "" 100 "Unprivileged user")
+  info "tcli_linux_logger_infoscreenFailed"
+  _result=$( tcli_linux_logger_infoscreenFailedExit "Must be run as" "root" "" 100 "Unprivileged user")
   [ $(grep -R "Error >>> Unprivileged user : Must be run as root" ./log/mytest.log) ] && info_passed || info_failed
 	# TODO test result
 }
@@ -131,13 +131,13 @@ info_report() {
 
 # tests
 test_fildiscripter_3_false
-test_tcli_logger_init
+test_tcli_linux_logger_init
 test_fildiscripter_3_true
-test_tcli_logger_title
-test_tcli_logger_file_info
-test_tcli_logger_file_warn
-test_tcli_logger_file_error
-test_tcli_logger_infoscreenFailed
+test_tcli_linux_logger_title
+test_tcli_linux_logger_file_info
+test_tcli_linux_logger_file_warn
+test_tcli_linux_logger_file_error
+test_tcli_linux_logger_infoscreenFailed
 
 info_report
 

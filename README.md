@@ -41,31 +41,32 @@ git clone git@github.com:TirsvadCLI/Linux.Logger.git
 
 ## Functions
 ### Initialization
-- `tcli_logger_init()`: Initializes the logger, setting up output redirection and logging the start of the logger.
+- `tcli_linux_logger_init()`: Initializes the logger, setting up output redirection and logging the start of the logger.
 
 ### Logging Messages
-- `tcli_logger_infoscreen()`: Displays an info message during processing.
-- `tcli_logger_infoscreenDone()`: Shows a "DONE" message when a process is completed successfully.
-- `tcli_logger_infoscreenFailed()`: Displays a "FAILED" message, including an error message.
-- `tcli_logger_infoscreenFailedExit()`: Displays failure messages and exits the script with a specified error code.
-- `tcli_logger_infoscreenWarn()`: Displays a warning message.
+- `tcli_linux_logger_infoscreen()`: Displays an info message during processing.
+- `tcli_linux_logger_infoscreenDone()`: Shows a "DONE" message when a process is completed successfully.
+- `tcli_linux_logger_infoscreenFailed()`: Displays a "FAILED" message, including an error message.
+- `tcli_linux_logger_infoscreenFailedExit()`: Displays failure messages and exits the script with a specified error code.
+- `tcli_linux_logger_infoscreenWarn()`: Displays a warning message.
 
 ### Status Checking
-- `tcli_logger_infoscreenStatus()`: Checks the status of a command and logs either a failure or success message.
+- `tcli_linux_logger_infoscreenStatus()`: Checks the status of a command and logs either a failure or success message.
 
 ### Title Logging
-- `tcli_logger_title()`: Creates a formatted title box for better organization in the logs.
+- `tcli_linux_logger_title()`: Creates a formatted title box for better organization in the logs.
 
 ### File Logging
-- `tcli_logger_file_info()`: Logs informational messages to the log file.
-- `tcli_logger_file_warn()`: Logs warning messages.
-- `tcli_logger_file_error()`: Logs error messages.
-- `tcli_logger_file()`: Generic function to handle the actual file logging for various levels.
+- `tcli_linux_logger_file_info()`: Logs informational messages to the log file.
+- `tcli_linux_logger_file_warn()`: Logs warning messages.
+- `tcli_linux_logger_file_error()`: Logs error messages.
+- `tcli_linux_logger_file()`: Generic function to handle the actual file logging for various levels.
 
 ## Usage
-1. To use the logger, initialize it by calling `tcli_logger_init("path/to/logfile.log")` with the desired log file path.
-2. Use the functions provided to log messages at different stages of your process.
-3. Check the log file for detailed information about process execution.
+1. `Source Logger.sh` in the start of your script.
+2. To use the logger, initialize it by calling `tcli_linux_logger_init("path/to/logfile.log")` with the desired log file path.
+3. Use the functions provided to log messages at different stages of your process.
+4. Check the log file for detailed information about process execution.
 
 ## Testing
 To create a Docker image for testing, use the following command:
@@ -76,7 +77,7 @@ docker-compose build
 To run the test in the Docker container, execute:
 ```bash
 docker run --rm -it tirsvadclilinuxlogger_debian_service:latest
-./test_logger.sh
+./test_Logger.sh
 ```
 
 ## Contribution
