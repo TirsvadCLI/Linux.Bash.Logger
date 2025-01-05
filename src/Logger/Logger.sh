@@ -8,10 +8,10 @@
 ## @author Jens Tirsvad Nielsen
 ## @date May 2023
 
-declare -g -r TCLI_LINUX_LOGGER_SCRIPTDIR="$(dirname "$(realpath "${BASH_SOURCE}")")"
+declare -r TCLI_LINUX_LOGGER_SCRIPTDIR="$(dirname "$(realpath "${BASH_SOURCE}")")"
 
 ## @brief string for check if script is sourced
-declare -r TCLI_LINUX_LOGGER
+declare -r TCLI_LINUX_LOGGER_LOADED=1
 ## @brief string version
 declare -r TCLI_LINUX_LOGGER_VERSION="1.0.0"
 ## @brief string internal field separator
