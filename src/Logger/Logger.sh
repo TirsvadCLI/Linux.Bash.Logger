@@ -8,7 +8,7 @@
 ## @author Jens Tirsvad Nielsen
 ## @date May 2023
 
-declare -r TCLI_LINUX_BASH_LOGGER_SCRIPTDIR="$(dirname "$(realpath "${BASH_SOURCE}")")"
+declare -g TCLI_LINUX_BASH_LOGGER_SCRIPTDIR="$(dirname "$(realpath "${BASH_SOURCE}")")"
 ## @brief string version
 declare -g TCLI_LINUX_BASH_LOGGER="0.2.0"
 ## @brief string internal field separator
@@ -16,19 +16,19 @@ declare -g IFS=$'\n\t'
 ## @brief bool if warning have been triggered
 declare -g TCLI_LINUX_BASH_LOGGER_INFOSCREEN_WARN=0
 ## @brief string color no color
-declare -r TCLI_LINUX_BASH_LOGGER_NC='\033[0m' # No Color
+declare -g TCLI_LINUX_BASH_LOGGER_NC='\033[0m' # No Color
 ## @brief string color red
-declare -r TCLI_LINUX_BASH_LOGGER_RED='\033[0;31m'
+declare -g TCLI_LINUX_BASH_LOGGER_RED='\033[0;31m'
 ## @brief string color green
-declare -r TCLI_LINUX_BASH_LOGGER_GREEN='\033[0;32m'
+declare -g TCLI_LINUX_BASH_LOGGER_GREEN='\033[0;32m'
 ## @brief string color brown
-declare -r TCLI_LINUX_BASH_LOGGER_BROWN='\033[0;33m'
+declare -g TCLI_LINUX_BASH_LOGGER_BROWN='\033[0;33m'
 ## @brief string color blue
-declare -r TCLI_LINUX_BASH_LOGGER_BLUE='\033[0;34m'
+declare -g TCLI_LINUX_BASH_LOGGER_BLUE='\033[0;34m'
 ## @brief string color yellow
-declare -r TCLI_LINUX_BASH_LOGGER_YELLOW='\033[1;33m'
+declare -g TCLI_LINUX_BASH_LOGGER_YELLOW='\033[1;33m'
 ## @brief string color white
-declare -r TCLI_LINUX_BASH_LOGGER_WHITE='\033[0;37m'
+declare -g TCLI_LINUX_BASH_LOGGER_WHITE='\033[0;37m'
 
 ## @fn tcli_linux_bash_logger_init()
 ## @details
