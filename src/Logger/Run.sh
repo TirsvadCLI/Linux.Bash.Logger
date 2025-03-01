@@ -8,6 +8,7 @@
 ## @author Jens Tirsvad Nielsen
 ## @date May 2023
 
+## @brief string script directory
 declare -g TCLI_LINUX_BASH_LOGGER_SCRIPTDIR="$(dirname "$(realpath "${BASH_SOURCE}")")"
 ## @brief string version
 declare -g TCLI_LINUX_BASH_LOGGER="0.2.0"
@@ -29,37 +30,47 @@ declare -g TCLI_LINUX_BASH_LOGGER_BLUE='\033[0;34m'
 declare -g TCLI_LINUX_BASH_LOGGER_YELLOW='\033[1;33m'
 ## @brief string color white
 declare -g TCLI_LINUX_BASH_LOGGER_WHITE='\033[0;37m'
+## @brief back to line
+declare -g TCLI_LINUX_BASH_BACK_TO_LINE='\r\033[1C'
+## @brief log to file
+declare -g -i TCLI_LINUX_BASH_LOGGER_LOT_TO_FILE=1
 
 ## @fn tcli_linux_bash_logger_init()
 ## @details
 ## **Initial logger**
 ## All error go to log file
 ## Output to file example
-## printf "this output is visible" >&3
+## printf "this output is visible" 
 ## @param string full path of the log file
 tcli_linux_bash_logger_init() {
 	local _file=${1}
 	local _dir
 	_dir=$(dirname "${1}")
 	[ ! -d ${_dir} ] && mkdir $_dir || rm -f ${1}
-	exec 3>&1 4>&2
-	exec 1>$_file 2>&1
+    exec 2>$_file
 	tcli_linux_bash_logger_file_info "Loaded" "Logger $TCLI_LINUX_BASH_LOGGER_VERSION"
 }
 
 ## @fn tcli_linux_bash_logger_infoscreen()
 ## @details
 ## **Info of the process step [ ... ]**
+## @param string message
+## @param string message part 2 (optional)
 tcli_linux_bash_logger_infoscreen() {
-	printf $(printf "[......] ${TCLI_LINUX_BASH_LOGGER_BROWN}$1 ${TCLI_LINUX_BASH_LOGGER_NC}$2$n") >&3
+    if [ $2 ]; then
+        local n=" "
+    else
+        local n=""
+    fi
+	printf $(printf "[......] ${TCLI_LINUX_BASH_LOGGER_BROWN}$1${n}${TCLI_LINUX_BASH_LOGGER_NC}$2$n")
 }
 
 ## @fn tcli_linux_bash_logger_infoscreenDone()
 ## @details
 ## **Info of the process step [ DONE ]**
 tcli_linux_bash_logger_infoscreenDone() {
-	[ ${TCLI_LINUX_BASH_LOGGER_INFOSCREEN_WARN} == 1 ] && TCLI_LINUX_BASH_LOGGER_INFOSCREEN_WARN=0 || printf "\r\033[1C${TCLI_LINUX_BASH_LOGGER_GREEN} DONE ${TCLI_LINUX_BASH_LOGGER_NC}" >&3
-	printf "\r\033[80C\n" >&3
+	printf "\r\033[1C${TCLI_LINUX_BASH_LOGGER_GREEN} DONE ${TCLI_LINUX_BASH_LOGGER_NC}"
+	#printf "\r\033[80C\n" 
 }
 
 ## @fn tcli_linux_bash_logger_infoscreenFailed()
@@ -71,13 +82,12 @@ tcli_linux_bash_logger_infoscreenDone() {
 ## @param string function or other notice in front of message
 tcli_linux_bash_logger_infoscreenFailed() {
 	local -a _errormsg
-	# ="${1:-} ${2:-} ${3:-}"
 	[ ${1:-} ] && _errormsg=($1)
 	[ ${2:-} ] && _errormsg+=($2)
 	[ ${3:-} ] && _errormsg+=($3)
 	[ ${TCLI_LINUX_BASH_LOGGER_INFOSCREEN_WARN} == 1 ] && TCLI_LINUX_BASH_LOGGER_INFOSCREEN_WARN=0
-	printf "\r\033[1C${TCLI_LINUX_BASH_LOGGER_RED} FAILED ${TCLI_LINUX_BASH_LOGGER_NC}\n" >&3
-	tcli_linux_bash_logger_file_error $(echo ${_errormsg[@]}) ${4:-}
+	printf "${TCLI_LINUX_BASH_BACK_TO_LINE}${TCLI_LINUX_BASH_LOGGER_RED}FAILED ${TCLI_LINUX_BASH_LOGGER_NC}\n"
+	[ ${TCLI_LINUX_BASH_LOGGER_LOT_TO_FILE} == 1 ] && tcli_linux_bash_logger_file_error $(echo ${_errormsg[@]}) ${4:-}
 }
 
 ## @fn tcli_linux_bash_logger_infoscreenFailedExit()
@@ -95,7 +105,7 @@ tcli_linux_bash_logger_infoscreenFailedExit() {
 	[ ${1:-} ] && printf "${TCLI_LINUX_BASH_LOGGER_RED}${1}"
 	[ ${2:-} ] && printf " ${TCLI_LINUX_BASH_LOGGER_BLUE}${2}"
 	[ ${3:-} ] && printf " ${TCLI_LINUX_BASH_LOGGER_RED}${3}"
-	printf "${TCLI_LINUX_BASH_LOGGER_NC}\n" >&3
+	printf "${TCLI_LINUX_BASH_LOGGER_NC}\n" 
 	exit ${4:-1}
 }
 
@@ -104,7 +114,7 @@ tcli_linux_bash_logger_infoscreenFailedExit() {
 ## **Info of the process step [ FAILED ]**
 ## Then exit with a error code
 tcli_linux_bash_logger_infoscreenWarn() {
-	printf "\r\033[1C${TCLI_LINUX_BASH_LOGGER_YELLOW} WARN ${TCLI_LINUX_BASH_LOGGER_NC}" >&3
+	printf "\r\033[1C${TCLI_LINUX_BASH_LOGGER_YELLOW} WARN ${TCLI_LINUX_BASH_LOGGER_NC}" 
 	TCLI_LINUX_BASH_LOGGER_INFOSCREEN_WARN=1
 }
 
@@ -122,7 +132,7 @@ tcli_linux_bash_logger_infoscreenStatus() {
 ## **TODO**
 tcli_linux_bash_logger_errorCheck() {
 	if [ $? -eq 0 ]; then
-		printf "${TCLI_LINUX_BASH_LOGGER_RED}An error has occured.${TCLI_LINUX_BASH_LOGGER_NC}" >&3
+		printf "${TCLI_LINUX_BASH_LOGGER_RED}An error has occured.${TCLI_LINUX_BASH_LOGGER_NC}" 
 		# read -p "Press enter or space to ignore it. Press any other key to abort." -n 1 key
 		# if [[ $key != "" ]]; then
 		# 	exit
@@ -145,17 +155,17 @@ tcli_linux_bash_logger_title() {
 	local _fillerchar=${3:-"+"}
 	local -i _n_pad=$(((${_fillerlength} - ${#_title} - 2) / 2))
 	local -i _i=$(($_n_pad * 2 + 2 + ${#_title}))
-	printf -- "${_fillerchar}%.0s" $(seq ${_fillerlength}) >&3
-	printf "\n" >&3
-	printf -- "${_fillerchar}%.0s" $(seq ${_n_pad}) >&3
-	printf $(printf ' %s ' "$_title") >&3
+	printf -- "${_fillerchar}%.0s" $(seq ${_fillerlength}) 
+	printf "\n" 
+	printf -- "${_fillerchar}%.0s" $(seq ${_n_pad}) 
+	printf $(printf ' %s ' "$_title") 
 	if [ $(($_n_pad * 2 + ${#_title} + 2)) -lt ${_fillerlength} ]; then
 		((_n_pad++))
 	fi
-	printf -- "${_fillerchar}%.0s" $(seq ${_n_pad}) >&3
-	printf "\n" >&3
-	printf -- "${_fillerchar}%.0s" $(seq ${_fillerlength}) >&3
-	printf "\n" >&3
+	printf -- "${_fillerchar}%.0s" $(seq ${_n_pad}) 
+	printf "\n" 
+	printf -- "${_fillerchar}%.0s" $(seq ${_fillerlength}) 
+	printf "\n" 
 }
 
 ## @fn tcli_linux_bash_logger_file_info()
