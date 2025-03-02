@@ -147,8 +147,8 @@ test_tcli_linux_bash_logger_infoscreenDone() {
 ## - Else print FAILED
 test_tcli_linux_bash_logger_infoscreenFailed() {
 	local test_message="Test Info Screen"
-	local expected_output="[......] \033[0;33mTest Info Screen\033[0m\r\033[1C\033[0;31mFAILED \033[0m"
-	#local expected_output="[......] ${TCLI_LINUX_BASH_LOGGER_BROWN}Test Info Screen${TCLI_LINUX_BASH_LOGGER_NC}${TCLI_LINUX_BASH_BACK_TO_LINE}${TCLI_LINUX_BASH_LOGGER_RED}FAILED ${TCLI_LINUX_BASH_LOGGER_NC}"
+	local expected_output="[......] \033[0;33mTest Info Screen\033[0m\r\033[1C\033[0;31mFAILED\033[0m"
+	#local expected_output="[......] ${TCLI_LINUX_BASH_LOGGER_BROWN}Test Info Screen${TCLI_LINUX_BASH_LOGGER_NC}${TCLI_LINUX_BASH_BACK_TO_LINE}${TCLI_LINUX_BASH_LOGGER_RED}FAILED${TCLI_LINUX_BASH_LOGGER_NC}"
 
 	# Redirect stdout to test.log
 	exec 3>&1 1>test.log

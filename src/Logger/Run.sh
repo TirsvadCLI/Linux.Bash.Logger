@@ -86,7 +86,7 @@ tcli_linux_bash_logger_infoscreenFailed() {
 	[ ${2:-} ] && _errormsg+=($2)
 	[ ${3:-} ] && _errormsg+=($3)
 	[ ${TCLI_LINUX_BASH_LOGGER_INFOSCREEN_WARN} == 1 ] && TCLI_LINUX_BASH_LOGGER_INFOSCREEN_WARN=0
-	printf "${TCLI_LINUX_BASH_BACK_TO_LINE}${TCLI_LINUX_BASH_LOGGER_RED}FAILED ${TCLI_LINUX_BASH_LOGGER_NC}\n"
+	printf "${TCLI_LINUX_BASH_BACK_TO_LINE}${TCLI_LINUX_BASH_LOGGER_RED}FAILED${TCLI_LINUX_BASH_LOGGER_NC}\n"
 	[ ${TCLI_LINUX_BASH_LOGGER_LOT_TO_FILE} == 1 ] && tcli_linux_bash_logger_file_error $(echo ${_errormsg[@]}) ${4:-}
 }
 
