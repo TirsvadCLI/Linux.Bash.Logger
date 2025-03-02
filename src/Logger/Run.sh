@@ -69,7 +69,7 @@ tcli_linux_bash_logger_infoscreen() {
 ## @details
 ## **Info of the process step [ DONE ]**
 tcli_linux_bash_logger_infoscreenDone() {
-	printf "\r\033[1C${TCLI_LINUX_BASH_LOGGER_GREEN} DONE ${TCLI_LINUX_BASH_LOGGER_NC}"
+	printf "\r\033[1C${TCLI_LINUX_BASH_LOGGER_GREEN} DONE ${TCLI_LINUX_BASH_LOGGER_NC}\n"
 	#printf "\r\033[80C\n" 
 }
 
