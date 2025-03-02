@@ -1,6 +1,8 @@
+<!-- BADGES V1 -->
 [![Contributors][contributors-shield]][contributors-url]
 [![Forks][forks-shield]][forks-url]
 [![Stargazers][stars-shield]][stars-url]
+[![Downloads][downloads-shield]][downloads-url]
 [![Issues][issues-shield]][issues-url]
 [![MIT License][license-shield]][license-url]
 [![LinkedIn][linkedin-shield]][linkedin-url]
@@ -108,6 +110,8 @@ See more [here](CODE_OF_CONDUCT.md)
 [forks-url]: https://github.com/TirsvadCLI/Linux.Bash.Logger/network/members
 [stars-shield]: https://img.shields.io/github/stars/TirsvadCLI/Linux.Bash.Logger?style=for-the-badge
 [stars-url]: https://github.com/TirsvadCLI/Linux.Bash.Logger/stargazers
+[downloads-shield]: https://img.shields.io/github/downloads/TirsvadCLI/Linux.Bash.Logger/total?style=for-the-badge
+[downloads-url]: https://github.com/TirsvadCLI/Linux.Bash.Logger/graphs/traffic
 [issues-shield]: https://img.shields.io/github/issues/TirsvadCLI/Linux.Bash.Logger?style=for-the-badge
 [issues-url]: https://github.com/TirsvadCLI/Linux.Bash.Logger/issues
 [license-shield]: https://img.shields.io/github/license/TirsvadCLI/Linux.Bash.Logger?style=for-the-badge
