@@ -11,7 +11,7 @@
 ## @brief string script directory
 declare -g TCLI_LINUX_BASH_LOGGER_SCRIPTDIR="$(dirname "$(realpath "${BASH_SOURCE}")")"
 ## @brief string version
-declare -g TCLI_LINUX_BASH_LOGGER="0.2.0"
+declare -g TCLI_LINUX_BASH_LOGGER="0.3.2"
 ## @brief string internal field separator
 declare -g IFS=$'\n\t'
 ## @brief bool if warning have been triggered
@@ -114,7 +114,7 @@ tcli_linux_bash_logger_infoscreenFailedExit() {
 ## **Info of the process step [ FAILED ]**
 ## Then exit with a error code
 tcli_linux_bash_logger_infoscreenWarn() {
-	printf "\r\033[1C${TCLI_LINUX_BASH_LOGGER_YELLOW} WARN ${TCLI_LINUX_BASH_LOGGER_NC}" 
+	printf "\r\033[1C${TCLI_LINUX_BASH_LOGGER_YELLOW} WARN ${TCLI_LINUX_BASH_LOGGER_NC}\n" 
 	TCLI_LINUX_BASH_LOGGER_INFOSCREEN_WARN=1
 }
 
