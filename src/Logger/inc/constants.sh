@@ -1,7 +1,7 @@
 #!/bin/bash
 
 ## @brief string version
-declare -g -r TCLI_LINUX_BASH_LOGGER="0.3.2"
+declare -g -r TCLI_LINUX_BASH_LOGGER="0.3.3"
 ## @brief bool if warning have been triggered
 declare -g -i TCLI_LINUX_BASH_LOGGER_INFOSCREEN_WARN=0
 ## @brief string color no color
