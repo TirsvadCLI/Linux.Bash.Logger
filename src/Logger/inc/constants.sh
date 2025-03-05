@@ -4,6 +4,8 @@
 declare -g -r TCLI_LINUX_BASH_LOGGER="0.3.3"
 ## @brief bool if warning have been triggered
 declare -g -i TCLI_LINUX_BASH_LOGGER_INFOSCREEN_WARN=0
+## @brief string internal field separator
+declare -g IFS=$'\n\t'
 ## @brief string color no color
 declare -g -r TCLI_LINUX_BASH_LOGGER_NC='\033[0m' # No Color
 ## @brief string color red
