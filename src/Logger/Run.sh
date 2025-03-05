@@ -149,6 +149,15 @@ tcli_linux_bash_logger_title() {
 	printf "\n" 
 }
 
+## @fn tcli_linux_bash_logger_screen_info()
+## @details
+## **Info to screen**
+## @param string message
+tcli_linux_bash_logger_screen_error() {
+	local err=$1
+	printf "${TCLI_LINUX_BASH_LOGGER_RED}Error: ${err}${TCLI_LINUX_BASH_LOGGER_NC}\n"
+}
+
 ## @fn tcli_linux_bash_logger_file_info()
 ## @details
 ## **Info to log file**
