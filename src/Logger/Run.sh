@@ -11,7 +11,7 @@
 ## @brief string script directory
 declare -g TCLI_LINUX_BASH_LOGGER_SCRIPTDIR="$(dirname "$(realpath "${BASH_SOURCE}")")"
 ## @brief string version
-declare -g TCLI_LINUX_BASH_LOGGER="0.2.0"
+declare -g TCLI_LINUX_BASH_LOGGER="0.3.2"
 ## @brief string internal field separator
 declare -g IFS=$'\n\t'
 ## @brief bool if warning have been triggered
@@ -33,7 +33,7 @@ declare -g TCLI_LINUX_BASH_LOGGER_WHITE='\033[0;37m'
 ## @brief back to line
 declare -g TCLI_LINUX_BASH_BACK_TO_LINE='\r\033[1C'
 ## @brief log to file
-declare -g -i TCLI_LINUX_BASH_LOGGER_LOT_TO_FILE=1
+declare -g -i TCLI_LINUX_BASH_LOGGER_TO_FILE=1
 
 ## @fn tcli_linux_bash_logger_init()
 ## @details
@@ -87,7 +87,7 @@ tcli_linux_bash_logger_infoscreenFailed() {
 	[ ${3:-} ] && _errormsg+=($3)
 	[ ${TCLI_LINUX_BASH_LOGGER_INFOSCREEN_WARN} == 1 ] && TCLI_LINUX_BASH_LOGGER_INFOSCREEN_WARN=0
 	printf "${TCLI_LINUX_BASH_BACK_TO_LINE}${TCLI_LINUX_BASH_LOGGER_RED}FAILED${TCLI_LINUX_BASH_LOGGER_NC}\n"
-	[ ${TCLI_LINUX_BASH_LOGGER_LOT_TO_FILE} == 1 ] && tcli_linux_bash_logger_file_error $(echo ${_errormsg[@]}) ${4:-}
+	[ ${TCLI_LINUX_BASH_LOGGER_TO_FILE} == 1 ] && tcli_linux_bash_logger_file_error $(echo ${_errormsg[@]}) ${4:-}
 }
 
 ## @fn tcli_linux_bash_logger_infoscreenFailedExit()
@@ -114,7 +114,7 @@ tcli_linux_bash_logger_infoscreenFailedExit() {
 ## **Info of the process step [ FAILED ]**
 ## Then exit with a error code
 tcli_linux_bash_logger_infoscreenWarn() {
-	printf "\r\033[1C${TCLI_LINUX_BASH_LOGGER_YELLOW} WARN ${TCLI_LINUX_BASH_LOGGER_NC}" 
+	printf "\r\033[1C${TCLI_LINUX_BASH_LOGGER_YELLOW} WARN ${TCLI_LINUX_BASH_LOGGER_NC}\n" 
 	TCLI_LINUX_BASH_LOGGER_INFOSCREEN_WARN=1
 }
 
